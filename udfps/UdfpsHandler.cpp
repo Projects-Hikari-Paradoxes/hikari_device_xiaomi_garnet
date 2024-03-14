@@ -28,6 +28,8 @@
 #define LOW_BRIGHTNESS_THRESHHOLD 100
 
 #define COMMAND_FOD_PRESS_STATUS 1
+#define COMMAND_FOD_PRESS_X 2
+#define COMMAND_FOD_PRESS_Y 3
 #define PARAM_FOD_PRESSED 1
 #define PARAM_FOD_RELEASED 0
 
@@ -202,19 +204,11 @@ class XiaomiGarnetUdfpsHander : public UdfpsHandler {
         }).detach();
     }
 
-    void onFingerDown(uint32_t /*x*/, uint32_t /*y*/, float /*minor*/, float /*major*/) {
-        LOG(INFO) << __func__;
-
-        /*
-         * On fpc_fod devices, the waiting for finger message is not reliably sent...
-         * The finger down message is only reliably sent when the screen is turned off, so enable
-         * fod_status better late than never.
-         */
-        if (isFpcFod) {
-            setFodStatus(FOD_STATUS_ON);
-        }
-
-        // Ensure touchscreen is aware of the press state, ideally this is not needed
+    void onFingerDown(uint32_t x, uint32_t y, float /*minor*/, float /*major*/) {
+        LOG(INFO) << __func__ << "x: " << x << ", y: " << y;
+        // Track x and y coordinates
+        lastPressX = x;
+        lastPressY = y;
         setFingerDown(true);
     }
 
@@ -281,9 +275,9 @@ class XiaomiGarnetUdfpsHander : public UdfpsHandler {
   private:
     fingerprint_device_t* mDevice;
     android::base::unique_fd touch_fd_;
-    android::base::unique_fd disp_fd_;
     bool enrolling = false;
     bool isFpcFod;
+    uint32_t lastPressX, lastPressY;
 
     void setFodStatus(int value) {
         int buf[MAX_BUF_SIZE] = {MI_DISP_PRIMARY, Touch_Fod_Enable, value};
