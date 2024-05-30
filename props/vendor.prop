@@ -86,7 +86,11 @@ ro.hardware.camera=xiaomi
 ro.soc.manufacturer=QTI
 
 # Dex2oat
-dalvik.vm.dex2oat64.enabled=true
+dalvik.vm.dex2oat64.enabled=true 
+dalvik.vm.image-dex2oat-filter=speed 
+dalvik.vm.image-dex2oat-threads=8 
+dalvik.vm.dex2oat-filter=speed
+dalvik.vm.dex2oat-threads=8
 
 # Display
 ro.vendor.display.sensortype=2
