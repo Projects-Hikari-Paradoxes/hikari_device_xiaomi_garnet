@@ -157,6 +157,10 @@ on property:vendor.post_boot.parsed=1
     write /sys/block/sde/queue/read_ahead_kb 128
     write /sys/block/sdf/queue/read_ahead_kb 128
 
+on property:vendor.post_boot.parsed=1
+    # Set restricted cpuset to the same CPUs as system-background
+    copy /dev/cpuset/system-background/cpus /dev/cpuset/restricted/cpus
+
 service vendor.audio-hal /vendor/bin/hw/android.hardware.audio.service
     override
     class hal
