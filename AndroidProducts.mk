@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/superior_garnet.mk
+    $(LOCAL_DIR)/bliss_garnet.mk
 
 COMMON_LUNCH_CHOICES := \
-    superior_garnet-user \
-    superior_garnet-userdebug \
-    superior_garnet-eng
+    bliss_garnet-user \
+    bliss_garnet-userdebug \
+    bliss_garnet-eng
